@@ -55,7 +55,7 @@ boolean flag=0;
 char* room = "Кухня";
 char* room_temp="Кухня/Температура";
 unsigned long now;
-int state = 0;
+int state = 1;
 int maxTemp = 26;
 int minTemp = 23;
 String ip;
@@ -73,9 +73,9 @@ void setup_wifi() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-     sensors.begin();
+  sensors.begin();
 
-     sensors.setResolution(12);
+    sensors.setResolution(12);
     sensors.requestTemperatures(); // Send the command to get temperatures
     temp = sensors.getTempCByIndex(0);
 
@@ -116,8 +116,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
 switch (payload[0])
     {
     case '1':
-   if (payload[2] == '0' ) { digitalWrite(D1, HIGH);} 
-   else {digitalWrite(D1, LOW);}
+   if (payload[2] == '0' ) { digitalWrite(D1, HIGH); state= 0;} 
+   else {digitalWrite(D1, LOW); state= 1;}
          client.publish(room, answ);
          Serial.print("#1");
     break;
@@ -160,7 +160,7 @@ bool reconnect() {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
-           sensors.begin();
+      sensors.begin();
 
      sensors.setResolution(12);
     sensors.requestTemperatures(); // Send the command to get temperatures
@@ -209,7 +209,7 @@ void loop() {
     
 
   long now = millis();
-  if (now - lastMsg > 7000) {
+  if (now - lastMsg > 60000) {
     lastMsg = now;
   
   /*  if(analogRead(A0)>1)//если кнопка нажата ... 
@@ -235,8 +235,10 @@ String sv = "s/2/1/"+ String(state);// dev state
     if (temp < minTemp && state == 0) {Serial.println("ON"); state=1;
         client.publish("Кухня",  "1/1/1");
 }
-    client.publish("Кухня/Підлога/Температура",  String(temp).c_str(),TRUE);
+    client.publish("Кухня/Температура",  String(temp).c_str(),TRUE);
     client.publish("Кухня/Підлога/ip",  ip.c_str(),TRUE);
+    client.publish("Кухня/Підлога/state",  String(state).c_str(),TRUE);
+
 
 
   }
