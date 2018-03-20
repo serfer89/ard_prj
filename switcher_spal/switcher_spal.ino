@@ -6,13 +6,15 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPUpdateServer.h>
+#include "DHT.h"
+#define DHTPIN 13     // what digital pin we're connected to
+#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+DHT dht(DHTPIN, DHTTYPE);
 
 
 const char* ssid = "veronikav";
 const char* password = "2412198700";
 const char* mqtt_server = "192.168.0.77";
-
-
 
 ESP8266WebServer httpServer(80);
 ESP8266HTTPUpdateServer httpUpdater;
@@ -25,6 +27,7 @@ long lastMsg = 0;
 char answ[9];
 int startup = 0;
 String ip;
+String h_ind;
 
 int but_1 = 16;
 int but_2 = 5;
@@ -172,14 +175,17 @@ bool reconnect() {
 void setup() {
   pinMode(led_1, OUTPUT);
   pinMode(led_2, OUTPUT);
-    pinMode(led_3, OUTPUT);
+  pinMode(led_3, OUTPUT);
 
   pinMode(but_1, INPUT);
   pinMode(but_2, INPUT);
   pinMode(but_3, INPUT);
 
 
-  Serial.begin(115200);
+  Serial.begin(9600);
+  Serial.println("DHTxx test!");
+  dht.begin();
+  
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
@@ -196,6 +202,12 @@ void setup() {
 
 void loop() {
 
+   float h = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  float t = dht.readTemperature();
+
+ 
+ 
  httpServer.handleClient();
 
 
@@ -257,11 +269,23 @@ void loop() {
 
 
 
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(h) || isnan(t)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
+
+  // Compute heat index in Celsius (isFahreheit = false)
+  float hic = dht.computeHeatIndex(t, h, false);
+
+
+
  long now = millis();
-  if (now - lastMsg > 60000) {
+  if (now - lastMsg > 30000) {
     lastMsg = now;
   
     client.publish("Спальня/ip",  ip.c_str());
+    client.publish("Спальня/Температура", String(hic).c_str());
 
 
   }
