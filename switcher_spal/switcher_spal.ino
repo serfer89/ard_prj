@@ -176,7 +176,7 @@ void setup() {
 
   pinMode(but_1, INPUT);
   pinMode(but_2, INPUT);
-    pinMode(but_3, INPUT);
+  pinMode(but_3, INPUT);
 
 
   Serial.begin(115200);
@@ -222,10 +222,10 @@ void loop() {
 
 
   if (digitalRead(but_1) == HIGH )
-  {digitalWrite(led_1, HIGH); client.publish(room, "o/5/1/1"); but1_state = HIGH; Serial.println("btn 1 - HIGH");}
+  {digitalWrite(led_1, HIGH); /*client.publish(room, "o/5/1/1");*/ but1_state = HIGH; Serial.println("btn 1 - HIGH");}
   
   if (digitalRead(but_1) == LOW )
-  {digitalWrite(led_1, LOW); client.publish(room, "o/5/1/0"); but1_state = LOW; Serial.println("btn 1 - LOW");}
+  {digitalWrite(led_1, LOW); /*client.publish(room, "o/5/1/0");*/ but1_state = LOW; Serial.println("btn 1 - LOW");}
   }
   
 
@@ -235,31 +235,30 @@ void loop() {
     Serial.println(digitalRead(but_2));
    
   if (digitalRead(but_2) == HIGH )
-  {digitalWrite(led_2, HIGH); client.publish(room, "o/5/2/1"); but2_state = HIGH; Serial.println("btn 2 - HIGH");}
+  {digitalWrite(led_2, HIGH); /*client.publish(room, "o/5/2/1");*/ but2_state = HIGH; Serial.println("btn 2 - HIGH");}
   
   if (digitalRead(but_2) == LOW )
-  {digitalWrite(led_2, LOW); client.publish(room, "o/5/2/0");but2_state = LOW; Serial.println("btn 2 - LOW");}
+  {digitalWrite(led_2, LOW); /*client.publish(room, "o/5/2/0");*/ but2_state = LOW; Serial.println("btn 2 - LOW");}
   }
 
-    if (but1_state != digitalRead(but_3)) 
+   if (but3_state != digitalRead(but_3)) 
   {
     Serial.println(but3_state);
     Serial.println(digitalRead(but_3));
 
 
-
   if (digitalRead(but_3) == HIGH )
-  {digitalWrite(led_3, HIGH); client.publish(room, "o/5/3/1"); but3_state = HIGH; Serial.println("btn 3 - HIGH");}
+ {digitalWrite(led_3, HIGH); /*client.publish(room, "o/5/3/1");*/ but3_state = HIGH; Serial.println("btn 3 - HIGH");}
   
   if (digitalRead(but_3) == LOW )
-  {digitalWrite(led_3, LOW); client.publish(room, "o/5/3/0"); but3_state = LOW; Serial.println("btn 3 - LOW");}
+  {digitalWrite(led_3, LOW); /*client.publish(room, "o/5/3/0");*/ but3_state = LOW; Serial.println("btn 3 - LOW");}
   }
 
 
 
 
  long now = millis();
-  if (now - lastMsg > 7000) {
+  if (now - lastMsg > 60000) {
     lastMsg = now;
   
     client.publish("Спальня/ip",  ip.c_str());
