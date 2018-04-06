@@ -1,5 +1,6 @@
 
 
+
 /*
  Basic ESP8266 MQTT example
  This sketch demonstrates the capabilities of the pubsub library in combination
@@ -122,12 +123,13 @@ switch (payload[0])
          Serial.print("#1");
     break;
         
-   /* case '2':
-   (payload[2] == '0') ? digitalWrite(5, LOW) : digitalWrite(5, HIGH);
-             client.publish(room, answ);
+    case 'n':
+   if (payload[2] == '0' ) { maxTemp = 26; minTemp = 23;} 
+   else {int maxTemp = 26; int minTemp = 19; }
+   client.publish(room, "Night mode");
              Serial.print("#2");
            break;
- 
+ /*
     case '3':
    (payload[2] == '0' ) ? digitalWrite(4, LOW) : digitalWrite(4, HIGH);
              client.publish(room, answ);
@@ -209,7 +211,7 @@ void loop() {
     
 
   long now = millis();
-  if (now - lastMsg > 60000) {
+  if (now - lastMsg > 30000) {
     lastMsg = now;
   
   /*  if(analogRead(A0)>1)//если кнопка нажата ... 
@@ -238,7 +240,8 @@ String sv = "s/2/1/"+ String(state);// dev state
     client.publish("Кухня/Температура",  String(temp).c_str(),TRUE);
     client.publish("Кухня/Підлога/ip",  ip.c_str(),TRUE);
     client.publish("Кухня/Підлога/state",  String(state).c_str(),TRUE);
-
+    String  msg_comb="minTemp-"+String(minTemp);
+    client.publish("Кухня/Підлога/ip",  msg_comb.c_str(),TRUE);
 
 
   }
