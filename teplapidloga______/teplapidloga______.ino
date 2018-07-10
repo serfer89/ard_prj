@@ -57,8 +57,8 @@ char* room = "Кухня";
 char* room_temp="Кухня/Температура";
 unsigned long now;
 int state = 1;
-int maxTemp = 26;
-int minTemp = 23;
+int maxTemp = 25;
+int minTemp = 22;
 String ip;
 long lastReconnectAttempt = 0;
 
@@ -124,9 +124,11 @@ switch (payload[0])
     break;
         
     case 'n':
-   if (payload[2] == '0' ) { maxTemp = 26; minTemp = 23;} 
-   else {int maxTemp = 26; int minTemp = 19; }
-   client.publish(room, "Night mode");
+   if (payload[2] == '0' ) { maxTemp = 26; minTemp = 19;  client.publish(room, "Night mode - on");
+} 
+   else {int maxTemp = 26; int minTemp = 23;    
+   client.publish(room, "Night mode - off");
+}
              Serial.print("#2");
            break;
  /*

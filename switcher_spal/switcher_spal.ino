@@ -55,6 +55,48 @@ void setup_wifi() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+  
+   if (but1_state != digitalRead(but_1)) 
+  {
+    Serial.println(but1_state);
+    Serial.println(digitalRead(but_1));
+
+
+
+  if (digitalRead(but_1) == HIGH )
+  {digitalWrite(led_1, HIGH); client.publish(room, "o/5/1/1"); but1_state = HIGH; Serial.println("btn 1 - HIGH");}
+  
+  if (digitalRead(but_1) == LOW )
+  {digitalWrite(led_1, LOW); client.publish(room, "o/5/1/0"); but1_state = LOW; Serial.println("btn 1 - LOW");}
+  }
+  
+
+    if (but2_state != digitalRead(but_2)) 
+  {
+    Serial.println(but2_state);
+    Serial.println(digitalRead(but_2));
+   
+  if (digitalRead(but_2) == HIGH )
+  {digitalWrite(led_2, HIGH); client.publish(room, "o/5/2/1"); but2_state = HIGH; Serial.println("btn 2 - HIGH");}
+  
+  if (digitalRead(but_2) == LOW )
+  {digitalWrite(led_2, LOW); client.publish(room, "o/5/2/0"); but2_state = LOW; Serial.println("btn 2 - LOW");}
+  }
+
+   if (but3_state != digitalRead(but_3)) 
+  {
+    Serial.println(but3_state);
+    Serial.println(digitalRead(but_3));
+
+
+  if (digitalRead(but_3) == HIGH )
+ {digitalWrite(led_3, HIGH); client.publish(room, "o/5/3/1"); but3_state = HIGH; Serial.println("btn 3 - HIGH");}
+  
+  if (digitalRead(but_3) == LOW )
+  {digitalWrite(led_3, LOW); client.publish(room, "o/5/3/0"); but3_state = LOW; Serial.println("btn 3 - LOW");}
+  }
+
+  
   }
 
   randomSeed(micros());
@@ -166,7 +208,54 @@ bool reconnect() {
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
       // Wait 5 seconds before retrying
-      delay(5000);
+
+
+       if (but1_state != digitalRead(but_1)) 
+  {
+    Serial.println(but1_state);
+    Serial.println(digitalRead(but_1));
+
+
+
+  if (digitalRead(but_1) == HIGH )
+  {digitalWrite(led_1, HIGH); client.publish(room, "o/5/1/1"); but1_state = HIGH; Serial.println("btn 1 - HIGH");}
+  
+  if (digitalRead(but_1) == LOW )
+  {digitalWrite(led_1, LOW); client.publish(room, "o/5/1/0"); but1_state = LOW; Serial.println("btn 1 - LOW");}
+  }
+  
+
+    if (but2_state != digitalRead(but_2)) 
+  {
+    Serial.println(but2_state);
+    Serial.println(digitalRead(but_2));
+   
+  if (digitalRead(but_2) == HIGH )
+  {digitalWrite(led_2, HIGH); client.publish(room, "o/5/2/1"); but2_state = HIGH; Serial.println("btn 2 - HIGH");}
+  
+  if (digitalRead(but_2) == LOW )
+  {digitalWrite(led_2, LOW); client.publish(room, "o/5/2/0"); but2_state = LOW; Serial.println("btn 2 - LOW");}
+  }
+
+   if (but3_state != digitalRead(but_3)) 
+  {
+    Serial.println(but3_state);
+    Serial.println(digitalRead(but_3));
+
+
+  if (digitalRead(but_3) == HIGH )
+ {digitalWrite(led_3, HIGH); client.publish(room, "o/5/3/1"); but3_state = HIGH; Serial.println("btn 3 - HIGH");}
+  
+  if (digitalRead(but_3) == LOW )
+  {digitalWrite(led_3, LOW); client.publish(room, "o/5/3/0"); but3_state = LOW; Serial.println("btn 3 - LOW");}
+  }
+
+
+
+
+      
+      
+      delay(500);
     }
   }
 }
@@ -281,7 +370,7 @@ void loop() {
 
 
  long now = millis();
-  if (now - lastMsg > 30000) {
+  if (now - lastMsg > 20000) {
     lastMsg = now;
   
     client.publish("Спальня/ip",  ip.c_str());
