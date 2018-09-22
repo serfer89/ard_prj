@@ -30,7 +30,7 @@
 #include <ESP8266HTTPUpdateServer.h>
 
 // Data wire is plugged into pin 2 on the Arduino
-#define ONE_WIRE_BUS 4
+#define ONE_WIRE_BUS 16
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 // Update these with values suitable for your network.
@@ -53,8 +53,8 @@ float temp = 0;
 long previousMillis = 0; 
 int val=0; 
 boolean flag=0;
-char* room = "Кухня";
-char* room_temp="Кухня/Температура";
+char* room = "Коридор";
+char* room_temp="Коридор/Температура";
 unsigned long now;
 int state = 1;
 int maxTemp = 25;
@@ -155,10 +155,10 @@ bool reconnect() {
 
       // Once connected, publish an announcement...
       Serial.println(startup);
-      client.publish("Кухня/Температура", "hello world");
+      client.publish("Коридор/Температура", "hello world");
       // ... and resubscribe
-      client.subscribe("Кухня");
-            client.publish("Кухня", "startup");
+      client.subscribe("Коридор");
+            client.publish("Коридор", "startup");
 
     } else {
       Serial.print("failed, rc=");
@@ -234,16 +234,16 @@ String sv = "s/2/1/"+ String(state);// dev state
     
     Serial.println(temp);
     if (temp > maxTemp && state == 1) {Serial.println("OFF"); state=0;
-        client.publish("Кухня", "1/0/1");
+        client.publish("Коридор", "1/0/5");
 }
     if (temp < minTemp && state == 0) {Serial.println("ON"); state=1;
-        client.publish("Кухня",  "1/1/1");
+        client.publish("Коридор",  "1/1/5");
 }
-    client.publish("Кухня/Температура",  String(temp).c_str(),TRUE);
-    client.publish("Кухня/Підлога/ip",  ip.c_str(),TRUE);
-    client.publish("Кухня/Підлога/state",  String(state).c_str(),TRUE);
+    client.publish("Коридор/Температура",  String(temp).c_str(),TRUE);
+    client.publish("Коридор/Підлога/ip",  ip.c_str(),TRUE);
+    client.publish("Коридор/Підлога/state",  String(state).c_str(),TRUE);
     String  msg_comb="minTemp-"+String(minTemp);
-    client.publish("Кухня/Підлога/ip",  msg_comb.c_str(),TRUE);
+    client.publish("Коридор/Підлога/ip",  msg_comb.c_str(),TRUE);
 
 
   }
