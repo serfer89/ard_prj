@@ -290,19 +290,19 @@ void pushData(DeviceAddress deviceAddress)
 
     if (deviceAddress == korudor_temp)
     {
-    client.publish("Коридор/Температура",  String(tempC).c_str(),TRUE);
-    client.publish("Коридор/Підлога/ip",  ip.c_str(),TRUE);
+    client.publish("Коридор/Температура",  String(tempC).c_str());
+    client.publish("Коридор/Підлога/ip",  ip.c_str());
     }
    if (deviceAddress == wcBig_temp)
    {
-    client.publish("СанВузолВеликий/Температура",  String(tempC).c_str(),TRUE);
-    client.publish("СанВузолВеликий/Підлога/ip",  ip.c_str(),TRUE);
+    client.publish("СанВузолВеликий/Температура",  String(tempC).c_str());
+    client.publish("СанВузолВеликий/Підлога/ip",  ip.c_str());
     
     }
     if (deviceAddress == wcLittle_temp)
     {
-    client.publish("СанВузолМалий/Температура",  String(tempC).c_str(),TRUE);
-    client.publish("СанВузолМалий/Підлога/ip",  ip.c_str(),TRUE);
+    client.publish("СанВузолМалий/Температура",  String(tempC).c_str());
+    client.publish("СанВузолМалий/Підлога/ip",  ip.c_str());
     }
 }
 
